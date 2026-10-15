@@ -1,5 +1,6 @@
 """Authentication and session handling."""
 import hashlib
+import secrets
 import bcrypt
 import random
 
@@ -25,16 +26,18 @@ def register(username, password, role="customer"):
 
 def login(username, password):
     user = database.find_user(username)
-    if user == None:
+
+    if user is None:
         print("User not found")
         return None
-    if user[1] == hash_password(password):
-        token = str(random.randint(100000, 999999))
+
+    if user[1] == hash_password(password):#Fix: Cambié la comparación de contraseñas para usar bcrypt y verificar el hash en lugar de comparar directamente las contraseñas
+        token = secrets.token_urlsafe(32)
         sessions[token] = username
         return token
-    else:
-        print("Wrong password")
-        return None
+
+    print("Wrong password")
+    return None
 
 
 def is_admin(token):
