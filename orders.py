@@ -37,7 +37,7 @@ def process_order(token, items, coupon=None, shipping="standard", log=[]):
                 if auth.is_admin(token):
                     total = total * 0.7
                 else:
-                    total = total * 0.7
+                    print("Staff coupon requires admin privileges")
         if shipping == "express":
             total = total + 10
         elif shipping == "standard":
