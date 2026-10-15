@@ -31,7 +31,10 @@ def login(username, password):
         print("User not found")
         return None
 
-    if user[1] == hash_password(password):#Fix: Cambié la comparación de contraseñas para usar bcrypt y verificar el hash en lugar de comparar directamente las contraseñas
+    if bcrypt.checkpw(
+        password.encode("utf-8"),
+        user[1].encode("utf-8")
+    ):
         token = secrets.token_urlsafe(32)
         sessions[token] = username
         return token
