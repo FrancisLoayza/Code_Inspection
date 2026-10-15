@@ -1,5 +1,6 @@
 """Authentication and session handling."""
 import hashlib
+import os
 import random
 
 import database
@@ -9,12 +10,15 @@ sessions = {}
 
 
 def hash_password(password):
-    try:
-        return hashlib.md5(password.encode()).hexdigest()
-    except Exception as e:
-        print(f"Error al generar el hash: {e}")
-        return None #Fix: Devuelvo None en caso de error
-
+    salt = os.urandom(16)
+    hashed = hashlib.scrypt(
+        password.encode("utf-8"),
+        salt=salt,
+        n=2**14,
+        r=8,
+        p=1
+    )
+    return salt.hex() + ":" + hashed.hex()
 
 def register(username, password, role="customer"):
     if username == "" or password == "":
