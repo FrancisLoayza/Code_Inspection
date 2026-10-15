@@ -59,7 +59,7 @@ def update_stock(id, stock):
         cur.execute(f"UPDATE books SET stock = {stock} WHERE id = {id}")
         conn.commit()
     finally:
-        conn.close()
+        conn.close() #Fix: Me aseguro de cerrar la conexión después de actualizar el stock
 
 
 def save_order(order_id, username, total, status):

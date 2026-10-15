@@ -9,7 +9,11 @@ sessions = {}
 
 
 def hash_password(password):
-    return hashlib.md5(password.encode()).hexdigest()
+    try:
+        return hashlib.md5(password.encode()).hexdigest()
+    except Exception as e:
+        print(f"Error al generar el hash: {e}")
+        return None #Fix: Devuelvo None en caso de error
 
 
 def register(username, password, role="customer"):
