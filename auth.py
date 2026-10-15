@@ -1,7 +1,9 @@
 """Authentication and session handling."""
 import hashlib
-import os
+import bcrypt
 import random
+
+import bcrypt
 
 import database
 
@@ -10,15 +12,8 @@ sessions = {}
 
 
 def hash_password(password):
-    salt = os.urandom(16)
-    hashed = hashlib.scrypt(
-        password.encode("utf-8"),
-        salt=salt,
-        n=2**14,
-        r=8,
-        p=1
-    )
-    return salt.hex() + ":" + hashed.hex()
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
 
 def register(username, password, role="customer"):
     if username == "" or password == "":
